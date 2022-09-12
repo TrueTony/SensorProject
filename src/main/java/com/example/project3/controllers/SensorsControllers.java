@@ -6,6 +6,7 @@ import com.example.project3.services.SensorsService;
 import com.example.project3.util.SensorErrorResponse;
 import com.example.project3.util.SensorNotCreatedException;
 import com.example.project3.util.SensorNotFoundException;
+import com.example.project3.util.SensorValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,11 +25,13 @@ public class SensorsControllers {
 
     private final SensorsService sensorsService;
     private final ModelMapper modelMapper;
+    private final SensorValidator sensorValidator;
 
     @Autowired
-    public SensorsControllers(SensorsService sensorsService, ModelMapper modelMapper) {
+    public SensorsControllers(SensorsService sensorsService, ModelMapper modelMapper, SensorValidator sensorValidator) {
         this.sensorsService = sensorsService;
         this.modelMapper = modelMapper;
+        this.sensorValidator = sensorValidator;
     }
 
     @GetMapping()
@@ -42,9 +45,14 @@ public class SensorsControllers {
         return convertToSensorDTO(sensorsService.findOne(id));
     }
 
-    @PostMapping()
+    @PostMapping("/registration")
     public ResponseEntity<HttpStatus> addSensor(@RequestBody @Valid SensorDTO sensorDTO,
                                                 BindingResult bindingResult) {
+
+        Sensor sensor = convertToSensor(sensorDTO);
+
+        sensorValidator.validate(sensor, bindingResult);
+
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -56,7 +64,8 @@ public class SensorsControllers {
             }
             throw new SensorNotCreatedException(errorMsg.toString());
         }
-        sensorsService.save(convertToSensor(sensorDTO));
+
+        sensorsService.save(sensor);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -71,7 +80,7 @@ public class SensorsControllers {
     @ExceptionHandler
     private ResponseEntity<SensorErrorResponse> handleException(SensorNotFoundException e) {
         SensorErrorResponse response = new SensorErrorResponse(
-                "Sensor with this ID wasn't found",
+                "Сенсор с таким ID не найден",
                 System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
