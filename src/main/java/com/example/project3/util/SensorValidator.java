@@ -30,4 +30,12 @@ public class SensorValidator implements Validator {
             errors.rejectValue("name", "", "Сервис с таким именем уже создан");
         }
     }
+
+    public void validateExist(Object target, Errors errors) {
+        Sensor sensor = (Sensor) target;
+
+        if (sensorsService.findSensorByName(sensor.getName()).isEmpty()) {
+            errors.rejectValue("sensor", "", "Сервиса с таикм именем нет");
+        }
+    }
 }

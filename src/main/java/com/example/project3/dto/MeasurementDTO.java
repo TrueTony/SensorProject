@@ -2,21 +2,19 @@ package com.example.project3.dto;
 
 import com.example.project3.models.Sensor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 
 public class MeasurementDTO {
 
-    @NotEmpty(message = "Value не может быть пустым")
+    @NotNull(message = "Value не может быть пустым")
     @Min(value = -100, message = "Value не может быть меньше -100")
     @Max(value = 100, message = "Value не может быть больше 100")
     private float value;
 
-    @NotEmpty(message = "Raining не может быть пустым")
+    @NotNull(message = "Raining не может быть пустым")
     private boolean raining;
 
-    @NotEmpty(message = "Sensor не может быть пустым")
+    @NotNull(message = "Sensor не может быть пустым")
     private Sensor sensor;
 
     public float getValue() {

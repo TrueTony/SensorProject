@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -16,18 +17,18 @@ public class Measurement {
     @Column(name = "id")
     private int id;
 
-    @NotEmpty(message = "Value не может быть пустым")
+    @NotNull(message = "Value не может быть пустым")
     @Min(value = -100, message = "Value не может быть меньше -100")
     @Max(value = 100, message = "Value не может быть больше 100")
     @Column(name = "value")
     private float value;
 
-    @NotEmpty(message = "Raining не может быть пустым")
+    @NotNull(message = "Raining не может быть пустым")
     @Column(name = "raining")
     private boolean raining;
 
-    @NotEmpty(message = "Sensor не может быть пустым")
-    @ManyToOne
+    @NotNull(message = "Sensor не может быть пустым")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
     private Sensor sensor;
 
