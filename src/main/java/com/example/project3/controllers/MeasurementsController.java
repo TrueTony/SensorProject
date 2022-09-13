@@ -4,9 +4,7 @@ import com.example.project3.dto.MeasurementDTO;
 import com.example.project3.models.Measurement;
 import com.example.project3.models.Sensor;
 import com.example.project3.services.MeasurementsService;
-import com.example.project3.util.MeasurementErrorResponse;
-import com.example.project3.util.MeasurementNotCreatedException;
-import com.example.project3.util.SensorValidator;
+import com.example.project3.util.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -89,5 +87,13 @@ public class MeasurementsController {
                 e.getMessage(),
                 System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<MeasurementErrorResponse> handleException(MeasurementErrorResponse e) {
+        MeasurementErrorResponse response = new MeasurementErrorResponse(
+                "Измерения с таким ID не найдено",
+                System.currentTimeMillis());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }

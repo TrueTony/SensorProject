@@ -1,7 +1,6 @@
 package com.example.project3.services;
 
 import com.example.project3.models.Measurement;
-import com.example.project3.models.Sensor;
 import com.example.project3.repositories.MeasurementsRepository;
 import com.example.project3.util.MeasurementNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
