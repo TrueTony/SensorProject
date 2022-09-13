@@ -8,6 +8,7 @@ import com.example.project3.util.MeasurementErrorResponse;
 import com.example.project3.util.MeasurementNotCreatedException;
 import com.example.project3.util.SensorValidator;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ public class MeasurementsController {
     private final ModelMapper modelMapper;
     private final SensorValidator sensorValidator;
 
+    @Autowired
     public MeasurementsController(MeasurementsService measurementsService, ModelMapper modelMapper,
                                   SensorValidator sensorValidator) {
         this.measurementsService = measurementsService;
@@ -65,6 +67,12 @@ public class MeasurementsController {
             throw new MeasurementNotCreatedException(errorMsg.toString());
         }
         measurementsService.save(measurement);
+    }
+
+    @GetMapping("/rainyDaysCount")
+    public List<MeasurementDTO> rainingDays() {
+        return measurementsService.findAllRaining().stream().map(this::convertToMeasurementDTO)
+                .collect(Collectors.toList());
     }
 
     private Measurement convertToMeasurement(MeasurementDTO measurementDTO) {

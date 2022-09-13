@@ -36,10 +36,13 @@ public class MeasurementsService {
 
     @Transactional
     public void save(Measurement measurement) {
-        Optional<Sensor> sensor = sensorsService.findSensorByName(measurement.getSensor().getName());
-        measurement.setSensor(sensor.get());
+        measurement.setSensor(sensorsService.findSensorByName(measurement.getSensor().getName()).get());
         measurement.setCreatedAt(LocalDateTime.now());
         measurementsRepository.save(measurement);
+    }
+
+    public List<Measurement> findAllRaining() {
+        return measurementsRepository.findAllByRainingIsTrue();
     }
 
 }

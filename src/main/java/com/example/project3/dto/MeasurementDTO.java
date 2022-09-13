@@ -1,7 +1,5 @@
 package com.example.project3.dto;
 
-import com.example.project3.models.Sensor;
-
 import javax.validation.constraints.*;
 
 public class MeasurementDTO {
@@ -15,7 +13,7 @@ public class MeasurementDTO {
     private boolean raining;
 
     @NotNull(message = "Sensor не может быть пустым")
-    private Sensor sensor;
+    private SensorDTO sensor;
 
     public float getValue() {
         return value;
@@ -33,11 +31,11 @@ public class MeasurementDTO {
         this.raining = raining;
     }
 
-    public Sensor getSensor() {
+    public SensorDTO getSensor() {
         return sensor;
     }
 
-    public void setSensor(Sensor sensor) {
+    public void setSensor(SensorDTO sensor) {
         this.sensor = sensor;
     }
 }
